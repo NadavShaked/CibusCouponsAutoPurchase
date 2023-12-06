@@ -33,6 +33,7 @@ def round_up_to_half_hour(current_time):
     Returns:
         datetime: A new datetime object representing the time rounded up to the nearest half-hour.
     """
+    from_utc_to_israeli_time_hours = 2
     # Calculate the minutes and seconds of the current time
     current_minutes = current_time.minute
     current_seconds = current_time.second
@@ -41,7 +42,7 @@ def round_up_to_half_hour(current_time):
     minutes_to_round_up = 60 - (current_minutes % 30)
 
     # Calculate the time to round up to
-    rounded_time = current_time + timedelta(minutes=minutes_to_round_up, seconds=-current_seconds)
+    rounded_time = current_time + timedelta(hours=from_utc_to_israeli_time_hours, minutes=minutes_to_round_up, seconds=-current_seconds)
 
     return rounded_time
 
@@ -371,12 +372,6 @@ def cibus_coupons_auto_purchase(user_name, password):
 
     best_coupons_combination, _ = get_best_combination(coupon_values, int(user_budget), len(coupon_values) - 1)
 
-    # Round up the current time to the nearest half-hour
-    rounded_time = round_up_to_half_hour_from_current_time()
-
-    # Format the rounded time as a string in the "HH:MM" format
-    order_time = rounded_time.strftime("%H:%M")
-
     for i, coupon_value_count in enumerate(best_coupons_combination):
         purchase_times = int(coupon_value_count)
         for j in range(purchase_times):
@@ -385,6 +380,12 @@ def cibus_coupons_auto_purchase(user_name, password):
 
             token = get_user_token(user_name, password, company)
 
+            # Round up the current time to the nearest half-hour
+            rounded_time = round_up_to_half_hour_from_current_time()
+        
+            # Format the rounded time as a string in the "HH:MM" format
+            order_time = rounded_time.strftime("%H:%M")
+            
             is_inserted_to_cart = insert_coupon_to_cart(token, dish_id, coupon_value)
             # is_inserted_to_cart = is_inserted_to_cart and validate_coupon_inserted_to_cart(token, order_time)
             logging.info(

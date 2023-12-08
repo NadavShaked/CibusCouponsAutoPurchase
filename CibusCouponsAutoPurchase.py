@@ -9,14 +9,15 @@ import azure.functions as func
 def is_valid_time():
     # Get the current date and time
     current_time = datetime.now()
+    logging.info(f'is_valid_time - Current Time: {current_time}')
 
     # Check if the current day is not Friday or Saturday
     if current_time.weekday() not in [4, 5]:
         # Check if the current time is between 8pm and 9pm
         if 20 <= current_time.hour < 21:
-            logging.info("is_valid_time - valid time")
+            logging.info('is_valid_time - valid time')
             return True
-    logging.info("is_valid_time - Doesn't valid time")
+    logging.info('is_valid_time - Doesn\'t valid time')
     return False
 
 
@@ -372,7 +373,7 @@ def purchase_coupon(token, user_id, order_time):
 def cibus_coupons_auto_purchase(user_name, password):
     company = "מיקרוסופט"  # set Cibus user's company
 
-    logging.info("Cibus Purchase Flow - Start")
+    logging.info('Cibus Purchase Flow - Start')
 
     token = get_user_token(user_name, password, company)
 
@@ -406,7 +407,7 @@ def cibus_coupons_auto_purchase(user_name, password):
                 f'coupon insert to card, value: {coupon_value}, {j + 1} of {purchase_times} times - {"success" if is_inserted_to_cart else "failed"}')
 
             if is_inserted_to_cart:
-                # is_coupon_purchased = purchase_coupon(token, user_id, order_time)
+                is_coupon_purchased = purchase_coupon(token, user_id, order_time)
                 logging.info(
                     f'coupon purchased, value: {coupon_value}, {j + 1} of {purchase_times} times - {"success" if is_coupon_purchased else "failed"}')
 

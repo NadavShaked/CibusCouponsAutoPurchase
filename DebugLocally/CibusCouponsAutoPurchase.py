@@ -5,7 +5,7 @@ import json
 import sys
 # import azure.functions as func
 
-cibus_auth_url = 'capir.mysodexo.co.il'
+cibus_auth_url = 'api.capir.pluxee.co.il'
 cibus_auth_authority_header = 'capir.mysodexo.co.il'
 
 cibus_url = 'api.consumers.pluxee.co.il'
